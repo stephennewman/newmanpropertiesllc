@@ -38,7 +38,7 @@ export async function insertLead(lead: LeadRecord): Promise<{ data: LeadRecord |
   }
 
   const { data, error } = await supabase
-    .from("leads")
+    .from("newman_leads")
     .insert([lead])
     .select()
     .single();
