@@ -201,7 +201,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
               ))}
             </ol>
           </div>
-          <Link href="/" className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+          <Link href={`/sites/${slug}`} className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
             ← Back to {property?.name}
           </Link>
         </div>
@@ -211,7 +211,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
 
   return (
     <div ref={containerRef} className="fixed inset-0 bg-white z-50 overflow-auto" style={{ "--accent": accentColor } as React.CSSProperties}>
-      <Link href="/" className="fixed top-4 right-4 z-10 p-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors" aria-label="Close">
+      <Link href={`/sites/${slug}`} className="fixed top-4 right-4 z-10 p-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors" aria-label="Close">
         <X className="w-6 h-6" />
       </Link>
       <div className="fixed top-0 left-0 right-0 h-1 bg-[var(--border)] z-10">

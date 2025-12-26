@@ -45,7 +45,7 @@ export default function PlazaPage({ property }: PlazaPageProps) {
             </p>
           </div>
           <Link
-            href="/inquire"
+            href={`/sites/${property.slug}/inquire`}
             className="text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-all hover:opacity-90 flex items-center gap-2"
             style={{ backgroundColor: property.accentColor }}
           >
@@ -73,7 +73,7 @@ export default function PlazaPage({ property }: PlazaPageProps) {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/inquire"
+              href={`/sites/${property.slug}/inquire`}
               className="text-white px-10 py-4 rounded-full font-bold text-lg transition-all hover:opacity-90 shadow-lg"
               style={{ backgroundColor: property.accentColor }}
             >
@@ -233,7 +233,7 @@ export default function PlazaPage({ property }: PlazaPageProps) {
             choice for your business.
           </p>
           <Link
-            href="/inquire"
+            href={`/sites/${property.slug}/inquire`}
             className="inline-block bg-white hover:bg-[var(--background)] px-10 py-4 rounded-full font-bold text-lg transition-all shadow-lg"
             style={{ color: property.accentColor }}
           >
