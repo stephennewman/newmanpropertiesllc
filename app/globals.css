@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+:root {
+  /* Primary - Warm Teal */
+  --primary: #0D9488;
+  --primary-light: #14B8A6;
+  --primary-dark: #0F766E;
+  
+  /* Secondary - Warm Amber/Gold */
+  --secondary: #F59E0B;
+  --secondary-light: #FBBF24;
+  --secondary-dark: #D97706;
+  
+  /* Backgrounds */
+  --background: #FAFAF9;
+  --background-card: #FFFFFF;
+  --background-muted: #F5F5F4;
+  
+  /* Text */
+  --foreground: #44403C;
+  --foreground-muted: #78716C;
+  --foreground-light: #A8A29E;
+  
+  /* Borders */
+  --border: #E7E5E4;
+  --border-dark: #D6D3D1;
+  
+  /* Per-plaza accent colors */
+  --accent-palmharbor: #0D9488;
+  --accent-corallandings: #F97316;
+  --accent-highlandlakes: #6366F1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Focus styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: var(--primary);
+  color: white;
+}
