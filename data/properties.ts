@@ -138,7 +138,7 @@ export const properties: Record<string, PropertyData> = {
     zip: "34684",
     accentColor: "#0EA5E9",
     features: [
-      { icon: "💪", title: "LA Fitness Anchored", description: "Full-service gym with classes & pool" },
+      { icon: "💪", title: "Crunch Fitness Anchored", description: "Full-service gym with classes & amenities" },
       { icon: "🍳", title: "First Watch", description: "Award-winning breakfast & brunch" },
       { icon: "🚗", title: "High Traffic", description: "90,000+ vehicles daily" },
       { icon: "📍", title: "Prime Location", description: "US Hwy 19 at Alderman Road" },
@@ -146,10 +146,10 @@ export const properties: Record<string, PropertyData> = {
     stats: [
       { label: "Daily Traffic", value: "90,000+" },
       { label: "Total SF", value: "43,408" },
-      { label: "Anchor", value: "LA Fitness" },
+      { label: "Anchor", value: "Crunch Fitness" },
     ],
     tenants: [
-      { category: "💪 Fitness", name: "LA Fitness", description: "Full-service gym with pool, classes & personal training", rating: 4.0, reviews: 892 },
+      { category: "💪 Fitness", name: "Crunch Fitness", description: "Full-service gym with classes, personal training & amenities", rating: 4.2, reviews: 324 },
       { category: "🍳 Breakfast", name: "First Watch", description: "Award-winning breakfast, brunch & lunch spot", rating: 4.5, reviews: 2341 },
       { category: "📱 Technology", name: "Verizon", description: "Wireless services, phones & accessories", rating: 4.1, reviews: 156 },
       { category: "📦 Services", name: "The UPS Store", description: "Shipping, printing & mailbox services", rating: 4.3, reviews: 98 },
