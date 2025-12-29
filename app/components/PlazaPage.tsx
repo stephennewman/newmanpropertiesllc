@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, Clock, Star, ChevronRight } from "lucide-react";
+import { MapPin, Star, ChevronRight } from "lucide-react";
 import { PropertyData } from "@/data/properties";
+import { analytics } from "@/app/utils/analytics";
 
 interface PlazaPageProps {
   property: PropertyData;
@@ -46,6 +47,7 @@ export default function PlazaPage({ property }: PlazaPageProps) {
           </div>
           <Link
             href="/inquire"
+            onClick={() => analytics.tourClick(property.slug)}
             className="text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-all hover:opacity-90 flex items-center gap-2"
             style={{ backgroundColor: property.accentColor }}
           >
@@ -74,6 +76,7 @@ export default function PlazaPage({ property }: PlazaPageProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/inquire"
+              onClick={() => analytics.tourClick(property.slug)}
               className="text-white px-10 py-4 rounded-full font-bold text-lg transition-all hover:opacity-90 shadow-lg"
               style={{ backgroundColor: property.accentColor }}
             >
@@ -234,6 +237,7 @@ export default function PlazaPage({ property }: PlazaPageProps) {
           </p>
           <Link
             href="/inquire"
+            onClick={() => analytics.tourClick(property.slug)}
             className="inline-block bg-white hover:bg-[var(--background)] px-10 py-4 rounded-full font-bold text-lg transition-all shadow-lg"
             style={{ color: property.accentColor }}
           >

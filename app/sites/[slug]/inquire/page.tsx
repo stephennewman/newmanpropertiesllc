@@ -10,6 +10,7 @@ import {
   getTimeSlots,
 } from "@/app/utils/leadScoring";
 import { getPropertyBySlug } from "@/data/properties";
+import { analytics } from "@/app/utils/analytics";
 
 const businessTypes = [
   { id: "restaurant", label: "Restaurant / Food Service", description: "Dine-in, fast casual, café, or food-related business" },
@@ -69,6 +70,11 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
   const [error, setError] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Track form open on mount
+  useEffect(() => {
+    analytics.formOpen(slug);
+  }, [slug]);
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
@@ -76,6 +82,13 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
   }, [step]);
 
   const updateFormAndAdvance = (field: string, value: string, nextStep: number) => {
+    // Track form start on first interaction
+    if (step === 1) {
+      analytics.formStart(slug, 1);
+    }
+    // Track step completion
+    analytics.formStepComplete(slug, step);
+    
     setFormData((prev) => ({ ...prev, [field]: value }));
     setTimeout(() => setStep(nextStep), 150);
   };
@@ -141,6 +154,9 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
       });
 
       if (!response.ok) throw new Error("Failed to send request");
+      
+      // Track successful form submission
+      analytics.formSubmit(slug, leadScore?.score || 0, leadScore?.priority || "unknown");
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again or call us directly.");
