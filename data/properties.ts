@@ -151,9 +151,11 @@ export const properties: Record<string, PropertyData> = {
     tenants: [
       { category: "💪 Fitness", name: "Crunch Fitness", description: "Full-service gym with classes, personal training & amenities", rating: 4.2, reviews: 324 },
       { category: "🍳 Breakfast", name: "First Watch", description: "Award-winning breakfast, brunch & lunch spot", rating: 4.5, reviews: 2341 },
-      { category: "📱 Technology", name: "Verizon", description: "Wireless services, phones & accessories", rating: 4.1, reviews: 156 },
+      { category: "🦷 Dental", name: "Great Expressions Dental", description: "Comprehensive dental care for the whole family", rating: 4.0, reviews: 187 },
+      { category: "🧘 Wellness", name: "StretchMed", description: "Professional assisted stretching services", rating: 4.8, reviews: 92 },
+      { category: "🏥 Health", name: "Living Young Center", description: "Health and wellness services", rating: 4.6, reviews: 45 },
+      { category: "📱 Technology", name: "Total by Verizon", description: "Wireless services, phones & accessories", rating: 4.1, reviews: 156 },
       { category: "📦 Services", name: "The UPS Store", description: "Shipping, printing & mailbox services", rating: 4.3, reviews: 98 },
-      { category: "🏪 Retail", name: "Various Retailers", description: "Mix of local shops and services" },
     ],
     mapQuery: "35104+US+Hwy+19+N,+Palm+Harbor,+FL+34684",
   },
