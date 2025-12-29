@@ -214,6 +214,7 @@ export async function POST(request: NextRequest) {
     // Send email via Resend
     const resend = getResend();
     if (resend) {
+      // Send notification to property owner
       const { error: emailError } = await resend.emails.send({
         from: "Newman Properties <stephen@krezzo.com>",
         to: ["stephen@krezzo.com"],
@@ -228,6 +229,66 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
+
+      // Send confirmation to user
+      const userEmailHtml = `
+        <div style="font-family:system-ui,-apple-system,sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:#0D9488;color:white;padding:24px;border-radius:8px 8px 0 0;">
+            <h1 style="margin:0;font-size:24px;">${scheduledDate && scheduledTime ? "Your Tour is Scheduled!" : "We Received Your Inquiry"}</h1>
+            <p style="margin:8px 0 0 0;opacity:0.9;">${propertyName || propertySlug}</p>
+          </div>
+          
+          <div style="padding:24px;background:#ffffff;border:1px solid #E5E7EB;border-top:none;border-radius:0 0 8px 8px;">
+            <p style="margin:0 0 16px 0;color:#1F2937;font-size:16px;">Hi ${name},</p>
+            
+            <p style="margin:0 0 16px 0;color:#374151;">
+              ${scheduledDate && scheduledTime 
+                ? `Thank you for scheduling a tour at ${propertyName || propertySlug}. We're excited to show you around!`
+                : `Thank you for your interest in ${propertyName || propertySlug}. We'll be in touch within 24 hours to discuss your space needs.`
+              }
+            </p>
+            
+            ${scheduledDate && scheduledTime ? `
+              <div style="background:#F0FDF4;border:1px solid #BBF7D0;padding:16px;border-radius:8px;margin:16px 0;">
+                <h3 style="margin:0 0 8px 0;color:#166534;">📅 Tour Details</h3>
+                <p style="margin:0;color:#166534;"><strong>Date:</strong> ${formatScheduledDate(scheduledDate)}</p>
+                <p style="margin:0;color:#166534;"><strong>Time:</strong> ${scheduledTime}</p>
+                <p style="margin:8px 0 0 0;color:#166534;"><strong>Location:</strong> ${propertyName || propertySlug}</p>
+              </div>
+            ` : ""}
+            
+            <h3 style="margin:24px 0 12px 0;color:#1F2937;font-size:16px;">What happens next?</h3>
+            <ol style="margin:0;padding-left:20px;color:#374151;">
+              <li style="margin-bottom:8px;">We'll ${scheduledDate && scheduledTime ? "call or email to confirm your tour" : "reach out within 24 hours"}</li>
+              <li style="margin-bottom:8px;">Walk through available spaces and discuss your needs</li>
+              <li style="margin-bottom:8px;">Receive tailored recommendations and pricing</li>
+            </ol>
+            
+            <p style="margin:24px 0 0 0;color:#374151;">
+              Have questions before your visit? Reply to this email or call us directly.
+            </p>
+            
+            <p style="margin:24px 0 0 0;color:#374151;">
+              Best regards,<br/>
+              <strong>Newman Properties LLC</strong>
+            </p>
+            
+            <div style="margin-top:24px;padding-top:24px;border-top:1px solid #E5E7EB;">
+              <p style="margin:0;font-size:12px;color:#9CA3AF;">
+                This is an automated confirmation from Newman Properties LLC.
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Send confirmation email to user
+      await resend.emails.send({
+        from: "Newman Properties <stephen@krezzo.com>",
+        to: [email],
+        subject: `${scheduledDate && scheduledTime ? "Your Tour is Confirmed" : "We Received Your Inquiry"} - ${propertyName || propertySlug}`,
+        html: userEmailHtml,
+      });
     } else {
       console.log("Resend not configured, skipping email notification");
     }

@@ -201,7 +201,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
               ))}
             </ol>
           </div>
-          <Link href={`/sites/${slug}`} className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+          <Link href="/" className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors cursor-pointer">
             ← Back to {property?.name}
           </Link>
         </div>
@@ -211,7 +211,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
 
   return (
     <div ref={containerRef} className="fixed inset-0 bg-white z-50 overflow-auto" style={{ "--accent": accentColor } as React.CSSProperties}>
-      <Link href={`/sites/${slug}`} className="fixed top-4 right-4 z-10 p-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors" aria-label="Close">
+      <Link href="/" className="fixed top-4 right-4 z-10 p-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors cursor-pointer" aria-label="Close">
         <X className="w-6 h-6" />
       </Link>
       <div className="fixed top-0 left-0 right-0 h-1 bg-[var(--border)] z-10">
@@ -234,7 +234,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
               <p className="text-[var(--foreground-muted)] mb-8">Select one to continue</p>
               <div className="space-y-3">
                 {businessTypes.map((type) => (
-                  <button key={type.id} type="button" onClick={() => updateFormAndAdvance("businessType", type.id, 2)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] ${formData.businessType === type.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
+                  <button key={type.id} type="button" onClick={() => updateFormAndAdvance("businessType", type.id, 2)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] cursor-pointer ${formData.businessType === type.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
                     <span className="block font-semibold text-[var(--foreground)] text-lg">{type.label}</span>
                     <span className="block text-[var(--foreground-muted)] text-sm mt-1">{type.description}</span>
                   </button>
@@ -250,7 +250,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
               <p className="text-[var(--foreground-muted)] mb-8">Estimate the square footage</p>
               <div className="space-y-3">
                 {spaceOptions.map((option) => (
-                  <button key={option.id} type="button" onClick={() => updateFormAndAdvance("spaceNeeded", option.id, 3)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] ${formData.spaceNeeded === option.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
+                  <button key={option.id} type="button" onClick={() => updateFormAndAdvance("spaceNeeded", option.id, 3)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] cursor-pointer ${formData.spaceNeeded === option.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
                     <span className="block font-semibold text-[var(--foreground)] text-lg">{option.label}</span>
                     <span className="block text-[var(--foreground-muted)] text-sm mt-1">{option.description}</span>
                   </button>
@@ -266,7 +266,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
               <p className="text-[var(--foreground-muted)] mb-8">Select your timeline</p>
               <div className="space-y-3">
                 {timelines.map((option) => (
-                  <button key={option.id} type="button" onClick={() => updateFormAndAdvance("timeline", option.id, 4)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] ${formData.timeline === option.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
+                  <button key={option.id} type="button" onClick={() => updateFormAndAdvance("timeline", option.id, 4)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] cursor-pointer ${formData.timeline === option.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
                     <span className="block font-semibold text-[var(--foreground)] text-lg">{option.label}</span>
                   </button>
                 ))}
@@ -281,7 +281,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
               <p className="text-[var(--foreground-muted)] mb-8">This helps us find the right space for you</p>
               <div className="space-y-3">
                 {budgetOptions.map((option) => (
-                  <button key={option.id} type="button" onClick={() => updateFormAndAdvance("budget", option.id, 5)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] ${formData.budget === option.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
+                  <button key={option.id} type="button" onClick={() => updateFormAndAdvance("budget", option.id, 5)} className={`w-full text-left p-5 border-2 rounded-2xl transition-all hover:border-[var(--foreground)] cursor-pointer ${formData.budget === option.id ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)]"}`}>
                     <span className="block font-semibold text-[var(--foreground)] text-lg">{option.label}</span>
                   </button>
                 ))}
@@ -306,7 +306,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
                   {availableDates.slice(0, 8).map((date, index) => {
                     const isSelected = selectedDate?.toDateString() === date.toDateString();
                     return (
-                      <button key={index} type="button" onClick={() => { setSelectedDate(date); setSelectedTime(null); }} className={`p-3 rounded-xl border-2 text-center transition-all ${isSelected ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)] hover:border-[var(--foreground-muted)]"}`}>
+                      <button key={index} type="button" onClick={() => { setSelectedDate(date); setSelectedTime(null); }} className={`p-3 rounded-xl border-2 text-center transition-all cursor-pointer ${isSelected ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)] hover:border-[var(--foreground-muted)]"}`}>
                         <span className="block text-xs text-[var(--foreground-muted)]">{date.toLocaleDateString("en-US", { weekday: "short" })}</span>
                         <span className="block font-semibold text-[var(--foreground)]">{date.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
                       </button>
@@ -321,7 +321,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
                     {timeSlots.map((slot) => {
                       const isSelected = selectedTime === slot;
                       return (
-                        <button key={slot} type="button" onClick={() => setSelectedTime(slot)} className={`p-4 rounded-xl border-2 text-center transition-all ${isSelected ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)] hover:border-[var(--foreground-muted)]"}`}>
+                        <button key={slot} type="button" onClick={() => setSelectedTime(slot)} className={`p-4 rounded-xl border-2 text-center transition-all cursor-pointer ${isSelected ? "border-[var(--foreground)] bg-[var(--background)]" : "border-[var(--border)] hover:border-[var(--foreground-muted)]"}`}>
                           <Clock className="w-4 h-4 mx-auto mb-1 text-[var(--foreground-muted)]" />
                           <span className="block text-sm font-medium text-[var(--foreground)]">{slot}</span>
                         </button>
@@ -342,7 +342,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
                 </div>
               )}
               <div className="flex justify-center">
-                <button type="button" onClick={handleConfirmAppointment} disabled={!selectedDate || !selectedTime} className={`px-8 py-4 rounded-xl font-semibold text-lg transition-all ${selectedDate && selectedTime ? "text-white hover:opacity-90" : "bg-[var(--border)] text-[var(--foreground-muted)] cursor-not-allowed"}`} style={selectedDate && selectedTime ? { backgroundColor: accentColor } : {}}>
+                <button type="button" onClick={handleConfirmAppointment} disabled={!selectedDate || !selectedTime} className={`px-8 py-4 rounded-xl font-semibold text-lg transition-all ${selectedDate && selectedTime ? "text-white hover:opacity-90 cursor-pointer" : "bg-[var(--border)] text-[var(--foreground-muted)] cursor-not-allowed"}`} style={selectedDate && selectedTime ? { backgroundColor: accentColor } : {}}>
                   Next
                 </button>
               </div>
@@ -390,7 +390,7 @@ export default function InquirePage({ params }: { params: Promise<{ slug: string
                 </div>
                 {error && <p className="text-red-600 text-sm bg-red-50 p-3 rounded-xl">{error}</p>}
                 <div className="flex justify-center pt-4">
-                  <button type="submit" disabled={isLoading || !canSubmit()} className={`px-8 py-4 rounded-xl font-semibold text-lg transition-all ${!isLoading && canSubmit() ? "text-white hover:opacity-90" : "bg-[var(--border)] text-[var(--foreground-muted)] cursor-not-allowed"}`} style={!isLoading && canSubmit() ? { backgroundColor: accentColor } : {}}>
+                  <button type="submit" disabled={isLoading || !canSubmit()} className={`px-8 py-4 rounded-xl font-semibold text-lg transition-all ${!isLoading && canSubmit() ? "text-white hover:opacity-90 cursor-pointer" : "bg-[var(--border)] text-[var(--foreground-muted)] cursor-not-allowed"}`} style={!isLoading && canSubmit() ? { backgroundColor: accentColor } : {}}>
                     {isLoading ? "Submitting..." : "Schedule My Tour"}
                   </button>
                 </div>
