@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // Valid plaza subdomains
-const PLAZA_SUBDOMAINS = ["palmharborplaza", "corallandings", "highlandlakes", "seabreeze", "palmharborshops"];
+const PLAZA_SUBDOMAINS = ["palmharborplaza", "corallandings", "highlandlakes", "aldermanplaza", "palmharborshops"];
 
 export function middleware(request: NextRequest) {
   const hostname = request.headers.get("host") || "";

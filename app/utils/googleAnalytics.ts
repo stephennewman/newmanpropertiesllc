@@ -31,7 +31,7 @@ const PROPERTIES = [
   { slug: "palmharborplaza", name: "Palm Harbor Plaza", emoji: "🌴" },
   { slug: "corallandings", name: "Coral Landings", emoji: "🪸" },
   { slug: "highlandlakes", name: "Highland Lakes", emoji: "🏔️" },
-  { slug: "seabreeze", name: "Seabreeze", emoji: "🌊" },
+  { slug: "aldermanplaza", name: "Alderman Plaza", emoji: "💪" },
   { slug: "palmharborshops", name: "Palm Harbor Shops", emoji: "🛍️" },
 ];
 
