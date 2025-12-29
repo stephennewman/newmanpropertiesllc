@@ -260,10 +260,14 @@ export default function PlazaPage({ property }: PlazaPageProps) {
             {property.address}, {property.city}, {property.state} {property.zip}
           </p>
           <div className="mt-6 pt-6 border-t border-white/10">
+            <div className="mb-4 space-x-4">
+              <a href="/terms" className="text-white/50 hover:text-white/80 underline text-sm">Terms of Service</a>
+              <a href="/privacy" className="text-white/50 hover:text-white/80 underline text-sm">Privacy Policy</a>
+            </div>
             <p className="text-xs text-white/40 max-w-2xl mx-auto">
-              This site is an independent directory and is not affiliated with
-              or endorsed by the property owner or management company. For
-              official leasing inquiries, contact the property directly.
+              This site is an independent directory operated by Newman Properties LLC. We are not affiliated with, 
+              endorsed by, or connected to the property owner or management company. All information is aggregated 
+              from publicly available sources. For official leasing inquiries, contact the property directly.
             </p>
             <p className="text-sm text-white/50 mt-4">
               © 2025 Newman Properties LLC. All rights reserved.

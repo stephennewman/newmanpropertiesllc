@@ -96,6 +96,15 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto text-center text-sm text-[var(--foreground-muted)]">
           <p>© 2025 Newman Properties LLC. All rights reserved.</p>
           <p className="mt-2">Digital Real Estate for Local Businesses</p>
+          <div className="mt-4 space-x-4">
+            <Link href="/terms" className="hover:text-[var(--foreground)] underline">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-[var(--foreground)] underline">Privacy Policy</Link>
+          </div>
+          <p className="mt-4 text-xs text-[var(--foreground-light)] max-w-2xl mx-auto">
+            Newman Properties LLC is an independent directory service. We are not affiliated with, endorsed by, 
+            or connected to any property owners or management companies. All property information is aggregated 
+            from public sources.
+          </p>
         </div>
       </footer>
     </div>
