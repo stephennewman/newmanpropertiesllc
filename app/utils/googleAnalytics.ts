@@ -26,11 +26,30 @@ function getAnalyticsClient() {
 // Newman Properties GA4 Property ID - set in env vars
 const PROPERTY_ID = process.env.GA_PROPERTY_ID || "";
 
+// Property subdomains
+const PROPERTIES = [
+  { slug: "palmharborplaza", name: "Palm Harbor Plaza", emoji: "🌴" },
+  { slug: "corallandings", name: "Coral Landings", emoji: "🪸" },
+  { slug: "highlandlakes", name: "Highland Lakes", emoji: "🏔️" },
+  { slug: "seabreeze", name: "Seabreeze", emoji: "🌊" },
+  { slug: "palmharborshops", name: "Palm Harbor Shops", emoji: "🛍️" },
+];
+
 export interface TrendData {
   current: number;
   previous: number;
   change: number;
   direction: "up" | "down" | "flat";
+}
+
+export interface PropertyMetrics {
+  slug: string;
+  name: string;
+  emoji: string;
+  users: number;
+  pageViews: number;
+  tourClicks: number;
+  formSubmits: number;
 }
 
 export interface AnalyticsData {
@@ -53,6 +72,8 @@ export interface AnalyticsData {
   formOpens: number;
   formStarts: number;
   formSubmits: number;
+  // Per-property breakdown
+  propertyBreakdown: PropertyMetrics[];
   // Trends (compared to previous period)
   trends?: {
     totalUsers: TrendData;
@@ -104,6 +125,75 @@ async function getEventCount(
     return parseInt(response.rows?.[0]?.metricValues?.[0]?.value || "0");
   } catch {
     return 0;
+  }
+}
+
+async function getEventCountByProperty(
+  client: BetaAnalyticsDataClient,
+  startDate: string,
+  endDate: string,
+  eventName: string
+): Promise<Record<string, number>> {
+  try {
+    const [response] = await client.runReport({
+      property: `properties/${PROPERTY_ID}`,
+      dateRanges: [{ startDate, endDate }],
+      dimensions: [
+        { name: "eventName" },
+        { name: "customEvent:property" },
+      ],
+      metrics: [{ name: "eventCount" }],
+      dimensionFilter: {
+        filter: {
+          fieldName: "eventName",
+          stringFilter: { value: eventName },
+        },
+      },
+    });
+    
+    const result: Record<string, number> = {};
+    response.rows?.forEach((row) => {
+      const propertySlug = row.dimensionValues?.[1]?.value || "unknown";
+      const count = parseInt(row.metricValues?.[0]?.value || "0");
+      result[propertySlug] = (result[propertySlug] || 0) + count;
+    });
+    return result;
+  } catch {
+    return {};
+  }
+}
+
+async function getMetricsByHostname(
+  client: BetaAnalyticsDataClient,
+  startDate: string,
+  endDate: string
+): Promise<Record<string, { users: number; pageViews: number }>> {
+  try {
+    const [response] = await client.runReport({
+      property: `properties/${PROPERTY_ID}`,
+      dateRanges: [{ startDate, endDate }],
+      dimensions: [{ name: "hostName" }],
+      metrics: [
+        { name: "totalUsers" },
+        { name: "screenPageViews" },
+      ],
+    });
+    
+    const result: Record<string, { users: number; pageViews: number }> = {};
+    response.rows?.forEach((row) => {
+      const hostname = row.dimensionValues?.[0]?.value || "";
+      // Extract subdomain from hostname (e.g., "palmharborplaza" from "palmharborplaza.newmanpropertiesllc.com")
+      const subdomain = hostname.split(".")[0];
+      if (subdomain && subdomain !== "www" && subdomain !== "newmanpropertiesllc") {
+        result[subdomain] = {
+          users: parseInt(row.metricValues?.[0]?.value || "0"),
+          pageViews: parseInt(row.metricValues?.[1]?.value || "0"),
+        };
+      }
+    });
+    return result;
+  } catch {
+    return {};
   }
 }
 
@@ -171,7 +261,10 @@ export async function getAnalyticsData(
     phoneClicks,
     formOpens,
     formStarts,
-    formSubmits
+    formSubmits,
+    hostnameMetrics,
+    tourClicksByProperty,
+    formSubmitsByProperty,
   ] = await Promise.all([
     getBasicMetrics(client, startDate, endDate),
     getEventCount(client, startDate, endDate, "tour_click"),
@@ -179,7 +272,21 @@ export async function getAnalyticsData(
     getEventCount(client, startDate, endDate, "inquiry_form_open"),
     getEventCount(client, startDate, endDate, "inquiry_form_start"),
     getEventCount(client, startDate, endDate, "inquiry_form_submit"),
+    getMetricsByHostname(client, startDate, endDate),
+    getEventCountByProperty(client, startDate, endDate, "tour_click"),
+    getEventCountByProperty(client, startDate, endDate, "inquiry_form_submit"),
   ]);
+
+  // Build property breakdown
+  const propertyBreakdown: PropertyMetrics[] = PROPERTIES.map((prop) => ({
+    slug: prop.slug,
+    name: prop.name,
+    emoji: prop.emoji,
+    users: hostnameMetrics[prop.slug]?.users || 0,
+    pageViews: hostnameMetrics[prop.slug]?.pageViews || 0,
+    tourClicks: tourClicksByProperty[prop.slug] || 0,
+    formSubmits: formSubmitsByProperty[prop.slug] || 0,
+  }));
 
   // Fetch previous period data for trends
   let trends: AnalyticsData["trends"];
@@ -285,6 +392,7 @@ export async function getAnalyticsData(
     formOpens,
     formStarts,
     formSubmits,
+    propertyBreakdown,
     trends,
   };
 }
@@ -309,10 +417,6 @@ export function formatSlackMessage(data: AnalyticsData, type: "daily" | "weekly"
   const title = type === "daily" ? "Daily" : type === "weekly" ? "Weekly" : "Monthly";
   const comparisonText = type === "daily" ? "vs yesterday" : type === "weekly" ? "vs last week" : "vs last month";
 
-  const topPagesText = data.topPages
-    .map((p, i) => `${i + 1}. \`${p.page}\` - ${p.views} views`)
-    .join("\n");
-
   const topSourcesText = data.topSources
     .map((s) => `• ${s.source}: ${s.users} users`)
     .join("\n");
@@ -326,6 +430,17 @@ export function formatSlackMessage(data: AnalyticsData, type: "daily" | "weekly"
   const conversionRate = data.totalUsers > 0 
     ? ((data.formSubmits / data.totalUsers) * 100).toFixed(1) 
     : "0.0";
+
+  // Format property breakdown
+  const propertyBreakdownText = data.propertyBreakdown
+    .filter((p) => p.users > 0 || p.tourClicks > 0 || p.formSubmits > 0)
+    .map((p) => `${p.emoji} *${p.name}*: ${p.users} visitors, ${p.tourClicks} tour clicks, ${p.formSubmits} inquiries`)
+    .join("\n") || "No property-specific data yet";
+
+  // Full property table for all properties (even with zeros)
+  const fullPropertyTable = data.propertyBreakdown
+    .map((p) => `${p.emoji} ${p.name}: 👥${p.users} | 📅${p.tourClicks} | ✅${p.formSubmits}`)
+    .join("\n");
 
   const blocks: object[] = [
     {
@@ -346,6 +461,14 @@ export function formatSlackMessage(data: AnalyticsData, type: "daily" | "weekly"
     {
       type: "divider",
     },
+    // Overall metrics
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*📈 Overall Performance*",
+      },
+    },
     {
       type: "section",
       fields: [
@@ -355,70 +478,19 @@ export function formatSlackMessage(data: AnalyticsData, type: "daily" | "weekly"
         },
         {
           type: "mrkdwn",
-          text: `*🆕 New Visitors*\n${data.newUsers.toLocaleString()}`,
-        },
-        {
-          type: "mrkdwn",
           text: `*📄 Page Views*\n${data.pageViews.toLocaleString()}${formatTrend(data.trends?.pageViews)}`,
         },
-        {
-          type: "mrkdwn",
-          text: `*🔄 Sessions*\n${data.sessions.toLocaleString()}${formatTrend(data.trends?.sessions)}`,
-        },
-        {
-          type: "mrkdwn",
-          text: `*⏱️ Avg. Duration*\n${data.avgSessionDuration}`,
-        },
-        {
-          type: "mrkdwn",
-          text: `*↩️ Bounce Rate*\n${data.bounceRate}`,
-        },
-      ],
-    },
-    {
-      type: "divider",
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "*🏢 CTA Performance*",
-      },
-    },
-    {
-      type: "section",
-      fields: [
         {
           type: "mrkdwn",
           text: `*📅 Tour Clicks*\n${data.tourClicks}${formatTrend(data.trends?.tourClicks)}`,
         },
         {
           type: "mrkdwn",
-          text: `*📱 Phone Clicks*\n${data.phoneClicks}${formatTrend(data.trends?.phoneClicks)}`,
-        },
-      ],
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "*📝 Inquiry Funnel*",
-      },
-    },
-    {
-      type: "section",
-      fields: [
-        {
-          type: "mrkdwn",
-          text: `*📂 Form Opens*\n${data.formOpens}`,
+          text: `*✅ Inquiries*\n${data.formSubmits}${formatTrend(data.trends?.formSubmits)}`,
         },
         {
           type: "mrkdwn",
-          text: `*✏️ Form Starts*\n${data.formStarts}`,
-        },
-        {
-          type: "mrkdwn",
-          text: `*✅ Submissions*\n${data.formSubmits}${formatTrend(data.trends?.formSubmits)}`,
+          text: `*⏱️ Avg. Duration*\n${data.avgSessionDuration}`,
         },
         {
           type: "mrkdwn",
@@ -429,12 +501,23 @@ export function formatSlackMessage(data: AnalyticsData, type: "daily" | "weekly"
     {
       type: "divider",
     },
+    // Property breakdown section
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `*🔥 Top Pages*\n${topPagesText || "No data"}`,
+        text: "*🏢 Performance by Property*\n_(👥 Visitors | 📅 Tour Clicks | ✅ Inquiries)_",
       },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: fullPropertyTable,
+      },
+    },
+    {
+      type: "divider",
     },
     {
       type: "section",
@@ -484,5 +567,3 @@ export async function sendToSlack(message: object): Promise<boolean> {
     return false;
   }
 }
-
-
