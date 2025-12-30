@@ -126,6 +126,18 @@ Visit:
 
 ## Deployment Log
 
+### December 30, 2025
+**Homepage Redesign - Digital Services Focus**
+- Completely redesigned homepage to promote digital presence services for plazas/businesses
+- New hero section: "Transform Your Plaza Into a Lead-Generating Machine"
+- Added services section with 6 key offerings: Landing Pages, Lead Gen, Tour Scheduling, Lead Scoring, Notifications, Tenant Showcase
+- Added "What You Get" benefits section with checkmarks
+- Reframed existing plazas as portfolio/case studies ("Plazas We've Brought Online")
+- New CTA focused on plaza owners: "Ready to Fill Your Vacancies?"
+- Sticky header with navigation
+- Added visual polish: gradient backgrounds, blur effects, hover animations
+- Commit: `1da69df`
+
 ### December 29, 2025 - 7:50 AM EST
 **Google Analytics & Slack Integration**: Added analytics infrastructure
 - Installed `@google-analytics/data` package
