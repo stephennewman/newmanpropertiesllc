@@ -193,6 +193,11 @@ export default function PrivacyPage() {
 
       <footer className="py-8 px-4 border-t border-[var(--border)]">
         <div className="max-w-3xl mx-auto text-center text-sm text-[var(--foreground-muted)]">
+          <p className="mb-2">
+            <Link href="https://newmanpropertiesllc.com" className="text-[var(--primary)] hover:underline">
+              Newman Properties LLC
+            </Link>
+          </p>
           <p>© 2025 Newman Properties LLC. All rights reserved.</p>
           <div className="mt-2 space-x-4">
             <Link href="/terms" className="hover:text-[var(--foreground)]">Terms</Link>

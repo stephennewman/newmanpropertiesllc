@@ -11,6 +11,12 @@ export default function DataSourceFooter({ property }: DataSourceFooterProps) {
   return (
     <footer className="bg-[var(--foreground)] text-white/70 py-10 px-4">
       <div className="max-w-6xl mx-auto text-center">
+        <Link 
+          href="https://newmanpropertiesllc.com" 
+          className="inline-block text-white/40 hover:text-white/60 text-xs mb-4 transition-colors"
+        >
+          ← Back to Newman Properties LLC
+        </Link>
         <h2
           className="text-2xl font-bold mb-2"
           style={{ color: property.accentColor }}
