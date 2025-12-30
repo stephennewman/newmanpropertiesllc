@@ -70,14 +70,14 @@ export default function PlazaPage({ property }: PlazaPageProps) {
         </div>
       </header>
 
-      {/* Hero - Welcome Message */}
+      {/* Hero */}
       <section className="py-16 px-4 bg-gradient-to-br from-white via-[var(--background)] to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold text-[var(--foreground)] mb-6">
-            Welcome to
+          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+            <span className="text-[var(--foreground)]">{property.name}</span>
             <br />
             <span style={{ color: property.accentColor }}>
-              {property.name}
+              {property.tagline}
             </span>
           </h2>
           <p className="text-xl text-[var(--foreground-muted)] max-w-3xl mx-auto leading-relaxed">
