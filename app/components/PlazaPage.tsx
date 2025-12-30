@@ -1,15 +1,22 @@
 "use client";
 
-import Link from "next/link";
-import { MapPin, Star, ChevronRight } from "lucide-react";
+import { MapPin, Clock, Star } from "lucide-react";
 import { PropertyData } from "@/data/properties";
-import { analytics } from "@/app/utils/analytics";
+import { calculatePlazaStats } from "@/app/utils/plazaStats";
+import StatsBar from "./plaza/StatsBar";
+import BusinessCategories from "./plaza/BusinessCategories";
+import TenantCard from "./plaza/TenantCard";
+import NearbySection from "./plaza/NearbySection";
+import LeaseInquiryCTA from "./plaza/LeaseInquiryCTA";
+import DataSourceFooter from "./plaza/DataSourceFooter";
 
 interface PlazaPageProps {
   property: PropertyData;
 }
 
 export default function PlazaPage({ property }: PlazaPageProps) {
+  const plazaStats = calculatePlazaStats(property.tenants);
+
   return (
     <div
       className="min-h-screen bg-[var(--background)]"
@@ -25,13 +32,16 @@ export default function PlazaPage({ property }: PlazaPageProps) {
             <MapPin className="w-4 h-4" />
             {property.address}, {property.city}, {property.state} {property.zip}
           </span>
-          <span className="text-white/80">
-            We respond within 24 hours
-          </span>
+          {property.hours && (
+            <span className="flex items-center gap-2 text-white/90">
+              <Clock className="w-4 h-4" />
+              Open {property.hours}
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Header */}
+      {/* Header - No Tour CTA, just branding */}
       <header className="bg-white shadow-sm py-5 px-4 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div>
@@ -45,237 +55,165 @@ export default function PlazaPage({ property }: PlazaPageProps) {
               {property.tagline}
             </p>
           </div>
-          <Link
-            href="/inquire"
-            onClick={() => analytics.tourClick(property.slug)}
-            className="text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-all hover:opacity-90 flex items-center gap-2"
-            style={{ backgroundColor: property.accentColor }}
-          >
-            Schedule a Tour
-            <ChevronRight className="w-4 h-4" />
-          </Link>
+          {/* Aggregate Rating Badge */}
+          {plazaStats.avgRating > 0 && (
+            <div className="flex items-center gap-2 bg-[var(--background)] px-4 py-2 rounded-full">
+              <Star className="w-5 h-5 text-amber-500 fill-current" />
+              <span className="font-bold text-[var(--foreground)]">
+                {plazaStats.avgRating}
+              </span>
+              <span className="text-[var(--foreground-muted)] text-sm hidden sm:inline">
+                ({plazaStats.totalReviews.toLocaleString()} reviews)
+              </span>
+            </div>
+          )}
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero - Welcome Message */}
       <section className="py-16 px-4 bg-gradient-to-br from-white via-[var(--background)] to-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl font-bold text-[var(--foreground)] mb-6">
-            Grow Your Business
+            Welcome to
             <br />
             <span style={{ color: property.accentColor }}>
-              In a Thriving Location
+              {property.name}
             </span>
           </h2>
-          <p className="text-xl text-[var(--foreground-muted)] mb-10 max-w-3xl mx-auto leading-relaxed">
-            Join our community of successful businesses at {property.name}.
-            Prime visibility on US Highway 19 with ample parking and foot
-            traffic.
+          <p className="text-xl text-[var(--foreground-muted)] max-w-3xl mx-auto leading-relaxed">
+            {property.description}
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/inquire"
-              onClick={() => analytics.tourClick(property.slug)}
-              className="text-white px-10 py-4 rounded-full font-bold text-lg transition-all hover:opacity-90 shadow-lg"
-              style={{ backgroundColor: property.accentColor }}
-            >
-              Schedule a Tour
-            </Link>
-            <a
-              href={`https://www.google.com/maps/place/${property.mapQuery}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white hover:bg-[var(--background-muted)] border-2 px-10 py-4 rounded-full font-bold text-lg transition-all"
-              style={{
-                borderColor: property.accentColor,
-                color: property.accentColor,
-              }}
-            >
-              View on Map
-            </a>
-          </div>
         </div>
       </section>
 
-      {/* Why Lease Here */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h3 className="text-3xl font-bold text-center mb-12 text-[var(--foreground)]">
-            Why Lease at{" "}
-            <span style={{ color: property.accentColor }}>{property.name}?</span>
-          </h3>
+      {/* Stats Bar */}
+      <StatsBar
+        demographics={property.demographics}
+        propertyDetails={property.propertyDetails}
+        accentColor={property.accentColor}
+      />
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {property.features.map((feature, i) => (
-              <div key={i} className="text-center group">
-                <div
-                  className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-3xl shadow-md group-hover:scale-110 transition-transform"
-                  style={{ backgroundColor: `${property.accentColor}15` }}
-                >
-                  {feature.icon}
-                </div>
-                <h4 className="text-lg font-bold text-[var(--foreground)] mb-2">
-                  {feature.title}
-                </h4>
-                <p className="text-[var(--foreground-muted)] text-sm">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Business Categories */}
+      <BusinessCategories
+        tenants={property.tenants}
+        accentColor={property.accentColor}
+        plazaName={property.name}
+      />
 
       {/* Featured Tenants */}
       <section className="py-16 px-4 bg-[var(--background)]">
         <div className="max-w-6xl mx-auto">
           <h3 className="text-3xl font-bold text-center mb-4 text-[var(--foreground)]">
-            Featured{" "}
-            <span style={{ color: property.accentColor }}>Tenants</span>
+            Businesses at{" "}
+            <span style={{ color: property.accentColor }}>{property.name}</span>
           </h3>
-          <p className="text-center text-[var(--foreground-muted)] mb-12 max-w-2xl mx-auto">
-            Join these successful businesses already thriving at {property.name}
+          <p className="text-center text-[var(--foreground-muted)] mb-4 max-w-2xl mx-auto">
+            Discover {plazaStats.businessCount} businesses serving the Palm Harbor community
           </p>
+          
+          {/* Highlight top businesses */}
+          {plazaStats.topRated && plazaStats.mostReviewed && (
+            <p className="text-center text-sm text-[var(--foreground-light)] mb-8">
+              Featuring{" "}
+              <strong className="text-[var(--foreground)]">
+                {plazaStats.topRated.name}
+              </strong>{" "}
+              ({plazaStats.topRated.rating}★) and{" "}
+              <strong className="text-[var(--foreground)]">
+                {plazaStats.mostReviewed.name}
+              </strong>{" "}
+              ({plazaStats.mostReviewed.reviews?.toLocaleString()} reviews)
+            </p>
+          )}
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {property.tenants.map((tenant, i) => (
-              <div
-                key={i}
-                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all border border-[var(--border)] relative"
-              >
-                {tenant.badge && (
-                  <span
-                    className="absolute top-4 right-4 text-white text-xs font-bold px-3 py-1 rounded-full"
-                    style={{ backgroundColor: property.accentColor }}
-                  >
-                    {tenant.badge}
-                  </span>
-                )}
-                <p
-                  className="text-sm font-semibold mb-2 uppercase tracking-wider"
-                  style={{ color: property.accentColor }}
-                >
-                  {tenant.category}
-                </p>
-                <h4 className="text-lg font-bold mb-2 text-[var(--foreground)]">
-                  {tenant.name}
-                </h4>
-                <p className="text-[var(--foreground-muted)] text-sm mb-3">
-                  {tenant.description}
-                </p>
-                {tenant.rating && (
-                  <div className="flex items-center gap-1 text-amber-500">
-                    <Star className="w-4 h-4 fill-current" />
-                    <span className="font-bold text-[var(--foreground)]">
-                      {tenant.rating}
-                    </span>
-                    <span className="text-[var(--foreground-muted)] text-sm">
-                      ({tenant.reviews?.toLocaleString()})
-                    </span>
-                  </div>
-                )}
+              <div key={i} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                <TenantCard
+                  tenant={tenant}
+                  property={property}
+                  accentColor={property.accentColor}
+                />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Property Info */}
+      {/* Location Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div
-              className="text-white p-8 rounded-2xl shadow-lg"
-              style={{ backgroundColor: property.accentColor }}
-            >
-              <div className="text-4xl mb-4">🏢</div>
-              <h4 className="text-2xl font-bold mb-4">Property Details</h4>
-              <div className="space-y-2 text-white/90">
-                {property.stats.map((stat, i) => (
-                  <p key={i}>
-                    <strong>{stat.label}:</strong> {stat.value}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-[var(--foreground)] text-white p-8 rounded-2xl shadow-lg">
-              <div className="text-4xl mb-4">📍</div>
-              <h4 className="text-2xl font-bold mb-4">Location</h4>
-              <div className="space-y-2 text-white/90">
-                <p>{property.address}</p>
-                <p>
-                  {property.city}, {property.state} {property.zip}
-                </p>
-                <a
-                  href={`https://www.google.com/maps/place/${property.mapQuery}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-4 underline hover:no-underline"
-                >
-                  Get Directions →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section
-        className="py-16 px-4 text-white"
-        style={{ backgroundColor: property.accentColor }}
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-3xl sm:text-4xl font-bold mb-4">
-            Ready to Grow Your Business?
+          <h3 className="text-3xl font-bold text-center mb-8 text-[var(--foreground)]">
+            Visit <span style={{ color: property.accentColor }}>Us</span>
           </h3>
-          <p className="text-xl text-white/90 mb-8 leading-relaxed">
-            Schedule a tour today and discover why {property.name} is the right
-            choice for your business.
-          </p>
-          <Link
-            href="/inquire"
-            onClick={() => analytics.tourClick(property.slug)}
-            className="inline-block bg-white hover:bg-[var(--background)] px-10 py-4 rounded-full font-bold text-lg transition-all shadow-lg"
-            style={{ color: property.accentColor }}
-          >
-            Schedule a Tour
-          </Link>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Map Embed */}
+            <div className="rounded-2xl overflow-hidden shadow-lg h-64 md:h-auto">
+              <iframe
+                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${property.mapQuery}`}
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: "250px" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
+            {/* Location Details */}
+            <div className="flex flex-col justify-center">
+              <div className="bg-[var(--background)] p-6 rounded-2xl">
+                <h4 className="text-xl font-bold mb-4 text-[var(--foreground)]">
+                  Location & Hours
+                </h4>
+                <div className="space-y-3 text-[var(--foreground-muted)]">
+                  <p className="flex items-start gap-3">
+                    <MapPin
+                      className="w-5 h-5 mt-0.5 flex-shrink-0"
+                      style={{ color: property.accentColor }}
+                    />
+                    <span>
+                      {property.address}
+                      <br />
+                      {property.city}, {property.state} {property.zip}
+                    </span>
+                  </p>
+                  {property.hours && (
+                    <p className="flex items-center gap-3">
+                      <Clock
+                        className="w-5 h-5 flex-shrink-0"
+                        style={{ color: property.accentColor }}
+                      />
+                      <span>{property.hours}</span>
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[var(--foreground)] text-white/70 py-10 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2
-            className="text-2xl font-bold mb-2"
-            style={{ color: property.accentColor }}
-          >
-            {property.name}
-          </h2>
-          <p className="text-white/50 mb-4">{property.tagline}</p>
-          <p className="text-sm text-white/50">
-            {property.address}, {property.city}, {property.state} {property.zip}
-          </p>
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <div className="mb-4 space-x-4">
-              <a href="/terms" className="text-white/50 hover:text-white/80 underline text-sm">Terms of Service</a>
-              <a href="/privacy" className="text-white/50 hover:text-white/80 underline text-sm">Privacy Policy</a>
-            </div>
-            <p className="text-xs text-white/40 max-w-2xl mx-auto">
-              This site is an independent directory operated by Newman Properties LLC. We are not affiliated with, 
-              endorsed by, or connected to the property owner or management company. All information is aggregated 
-              from publicly available sources. For official leasing inquiries, contact the property directly.
-            </p>
-            <p className="text-sm text-white/50 mt-4">
-              © 2025 Newman Properties LLC. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      {/* Nearby Section */}
+      {property.nearby && property.nearby.length > 0 && (
+        <NearbySection
+          nearby={property.nearby}
+          accentColor={property.accentColor}
+        />
+      )}
+
+      {/* Lease Inquiry CTA (B2B conversion - at the end) */}
+      <LeaseInquiryCTA
+        demographics={property.demographics}
+        propertyDetails={property.propertyDetails}
+        plazaName={property.name}
+        plazaSlug={property.slug}
+        accentColor={property.accentColor}
+      />
+
+      {/* Footer with Data Sources */}
+      <DataSourceFooter property={property} />
     </div>
   );
 }
-
