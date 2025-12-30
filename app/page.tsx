@@ -270,10 +270,6 @@ export default function HomePage() {
             <p className="text-sm text-[var(--foreground-muted)]">
               © 2025 Newman Properties LLC
             </p>
-            <p className="mt-3 text-xs text-[var(--foreground-light)] max-w-xl mx-auto">
-              An independent community directory. Not affiliated with property owners or management companies. 
-              Information aggregated from public sources.
-            </p>
           </div>
         </div>
       </footer>
