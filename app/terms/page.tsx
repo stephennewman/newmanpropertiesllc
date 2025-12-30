@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { AlertCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Terms of Service | Newman Properties LLC",
@@ -20,7 +21,20 @@ export default function TermsPage() {
       <main className="py-12 px-4">
         <div className="max-w-3xl mx-auto prose prose-slate">
           <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Terms of Service</h1>
-          <p className="text-[var(--foreground-muted)] mb-8">Last updated: December 29, 2025</p>
+          <p className="text-[var(--foreground-muted)] mb-8">Last updated: December 30, 2025</p>
+
+          {/* Disclaimer Notice */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8 not-prose">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-amber-900">
+                <strong>Important:</strong> This site is an independent directory operated by Newman Properties LLC. 
+                We are not affiliated with, endorsed by, or connected to the property owner or management company. 
+                All information is aggregated from publicly available sources. For official leasing inquiries, 
+                contact the property directly. <Link href="/disclaimer" className="text-amber-700 underline hover:text-amber-900">Read full disclaimer</Link>
+              </p>
+            </div>
+          </div>
 
           <section className="mb-8">
             <h2 className="text-xl font-bold text-[var(--foreground)] mb-4">1. Acceptance of Terms</h2>
@@ -140,8 +154,9 @@ export default function TermsPage() {
         <div className="max-w-3xl mx-auto text-center text-sm text-[var(--foreground-muted)]">
           <p>© 2025 Newman Properties LLC. All rights reserved.</p>
           <div className="mt-2 space-x-4">
-            <Link href="/terms" className="hover:text-[var(--foreground)]">Terms of Service</Link>
-            <Link href="/privacy" className="hover:text-[var(--foreground)]">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[var(--foreground)]">Terms</Link>
+            <Link href="/privacy" className="hover:text-[var(--foreground)]">Privacy</Link>
+            <Link href="/disclaimer" className="hover:text-[var(--foreground)]">Disclaimer</Link>
           </div>
         </div>
       </footer>

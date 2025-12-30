@@ -37,13 +37,19 @@ export default function DataSourceFooter({ property }: DataSourceFooterProps) {
               href="/terms"
               className="text-white/50 hover:text-white/80 underline text-sm"
             >
-              Terms of Service
+              Terms
             </Link>
             <Link
               href="/privacy"
               className="text-white/50 hover:text-white/80 underline text-sm"
             >
-              Privacy Policy
+              Privacy
+            </Link>
+            <Link
+              href="/disclaimer"
+              className="text-white/50 hover:text-white/80 underline text-sm"
+            >
+              Disclaimer
             </Link>
           </div>
 
