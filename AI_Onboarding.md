@@ -126,6 +126,18 @@ Visit:
 
 ## Deployment Log
 
+### December 30, 2025 (Update 2)
+**Homepage Redesign - Community Service Focus**
+- Reframed as a community resource connecting tenants with commercial properties
+- New tagline: "Connecting Palm Harbor's Business Community"
+- Two-sided value prop: "Looking for Commercial Space?" + "Own a Commercial Property?"
+- "A Free Community Resource" badge in hero
+- Softer, less sales-focused messaging
+- "Supporting Local Business" mission section
+- CTA: "Have a Plaza or Know of One?"
+- Simplified plaza cards with cleaner layout
+- Commit: `9943fc0`
+
 ### December 30, 2025
 **Homepage Redesign - Digital Services Focus**
 - Completely redesigned homepage to promote digital presence services for plazas/businesses

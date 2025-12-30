@@ -261,6 +261,9 @@ export default function HomePage() {
               <Link href="/privacy" className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
                 Privacy
               </Link>
+              <Link href="/disclaimer" className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+                Disclaimer
+              </Link>
             </div>
           </div>
           <div className="mt-8 pt-6 border-t border-[var(--border)] text-center">
