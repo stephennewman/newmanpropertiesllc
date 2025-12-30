@@ -131,7 +131,7 @@ export const properties: Record<string, PropertyData> = {
   corallandings: {
     slug: "corallandings",
     name: "Coral Landings Shopping Plaza",
-    tagline: "Palm Harbor's Publix-Anchored Shopping & Dining Center",
+    tagline: "Palm Harbor's Grocery, Shopping & Dining Destination",
     description: "Coral Landings is a Publix-anchored neighborhood shopping center in the heart of Palm Harbor's affluent trade area. With over 91,500 vehicles passing daily on US Highway 19, the plaza offers exceptional visibility and a dynamic mix of national retailers, dining, and professional services.",
     address: "33211 US Hwy 19 N",
     city: "Palm Harbor",
@@ -188,7 +188,7 @@ export const properties: Record<string, PropertyData> = {
   highlandlakes: {
     slug: "highlandlakes",
     name: "Highland Lakes Plaza",
-    tagline: "Palm Harbor's Books, Crafts & Specialty Grocery Destination",
+    tagline: "Palm Harbor's Retail, Fitness & Dining Destination",
     description: "Highland Lakes Plaza is an established 79,528 SF retail center anchored by Barnes & Noble and Michaels, with Trader Joe's opening soon. Located on US Highway 19 with excellent visibility and 359 parking spaces, the plaza serves an affluent Palm Harbor community with a diverse tenant mix.",
     address: "33561 US Hwy 19 N",
     city: "Palm Harbor",
