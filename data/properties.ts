@@ -72,7 +72,7 @@ export const properties: Record<string, PropertyData> = {
   palmharborplaza: {
     slug: "palmharborplaza",
     name: "Palm Harbor Plaza",
-    tagline: "Your Local Shopping Destination",
+    tagline: "Palm Harbor's Home Improvement & Entertainment Hub",
     description: "Palm Harbor Plaza is a vibrant community shopping center on US Highway 19, featuring a diverse mix of home improvement stores, entertainment venues, and family-friendly businesses. From hardware supplies to dance classes, this plaza serves as a one-stop destination for Palm Harbor residents.",
     address: "35267 US Hwy 19 N",
     city: "Palm Harbor",
@@ -131,7 +131,7 @@ export const properties: Record<string, PropertyData> = {
   corallandings: {
     slug: "corallandings",
     name: "Coral Landings Shopping Plaza",
-    tagline: "Palm Harbor's Premier Shopping Destination",
+    tagline: "Palm Harbor's Publix-Anchored Shopping & Dining Center",
     description: "Coral Landings is a Publix-anchored neighborhood shopping center in the heart of Palm Harbor's affluent trade area. With over 91,500 vehicles passing daily on US Highway 19, the plaza offers exceptional visibility and a dynamic mix of national retailers, dining, and professional services.",
     address: "33211 US Hwy 19 N",
     city: "Palm Harbor",
@@ -188,7 +188,7 @@ export const properties: Record<string, PropertyData> = {
   highlandlakes: {
     slug: "highlandlakes",
     name: "Highland Lakes Plaza",
-    tagline: "Prime Retail Space in Palm Harbor",
+    tagline: "Palm Harbor's Books, Crafts & Specialty Grocery Destination",
     description: "Highland Lakes Plaza is an established 79,528 SF retail center anchored by Barnes & Noble and Michaels, with Trader Joe's opening soon. Located on US Highway 19 with excellent visibility and 359 parking spaces, the plaza serves an affluent Palm Harbor community with a diverse tenant mix.",
     address: "33561 US Hwy 19 N",
     city: "Palm Harbor",
@@ -303,7 +303,7 @@ export const properties: Record<string, PropertyData> = {
   palmharborshops: {
     slug: "palmharborshops",
     name: "Palm Harbor Shops",
-    tagline: "International Flavors & Local Flair",
+    tagline: "Palm Harbor's International Dining & Beauty Destination",
     description: "Palm Harbor Shops is a unique shopping destination featuring an eclectic mix of international dining and beauty services. From all-you-can-eat sushi to authentic Mediterranean cuisine, plus over 14 beauty salons and spas, this plaza offers a diverse experience for Palm Harbor residents.",
     address: "35857 US Hwy 19 N",
     city: "Palm Harbor",
